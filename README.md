@@ -50,35 +50,7 @@ This is a **high-performance, single-file personal link hub** designed for **Ous
 - **Vanilla JavaScript** — Zero-dependency, high-performance interactions  
 - **Canvas API** — Custom particle network renderer  
 
----
 
-## 🚀 Quick Start
-
-No build tools, no npm, no configuration needed.
-
-```bash
-# Clone the repository
-git clone https://github.com/Oussama-Ech-charef/link-in-bio.git
-
-# Navigate to the project
-cd link-in-bio
-
-# Open in browser (or use Live Server in VS Code)
-open index.html
-```
-
----
-
-## 📁 Project Structure
-
-```
-link-in-bio/
-├── index.html          # Main file — contains all HTML, CSS & JS
-├── oussama_avatar.png  # Profile picture
-└── README.md           # Project documentation
-```
-
----
 
 ## 🎨 Design Philosophy
 
