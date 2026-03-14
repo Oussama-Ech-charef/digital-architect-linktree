@@ -33,11 +33,9 @@ This is a **high-performance, single-file personal link hub** designed for **Ous
 | 🌐 **Particle Network Canvas** | Interactive WebGL-style animated background |
 | 🖱️ **Custom Cursor** | Dual-layer magnetic cursor with parallax tracking |
 | 🃏 **3D Tilt Card** | Real-time mouse-reactive perspective card |
-| 💡 **Theme Toggle** | Premium lightbulb switch with radial golden glow |
 | 🧲 **Magnetic Buttons** | Physics-based hover attraction on all links |
 | ⌨️ **Smart Typing Effect** | Multi-phrase typewriter with variable speed |
 | 🤖 **AI Mini Assistant** | Embedded chatbot for visitor Q&A |
-| 🌙 **Dark / Light Mode** | Persistent theme preference via localStorage |
 | 📱 **Fully Responsive** | Optimized for all screen sizes |
 | ♿ **Accessible** | Respects `prefers-reduced-motion` system setting |
 
