@@ -18,19 +18,49 @@
     <link rel="icon" href="oussama_avatar.png">
 
     <style>
-        :root {
+        :root[data-theme="dark"] {
             --bg: #050505;
             --text: #ffffff;
             --accent: #00f2fe;
             --accent-rgb: 0, 242, 254;
             --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-card-bg: linear-gradient(180deg, rgba(var(--accent-rgb), 0.02) 0%, rgba(0,0,0,0.6) 100%);
+            --panel-bg: rgba(10, 10, 10, 0.95);
+            --chat-msg-bg: rgba(255, 255, 255, 0.05);
             --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --btn-bg: rgba(255, 255, 255, 0.02);
+            --btn-glimmer: rgba(255, 255, 255, 0.05);
+            --avatar-out: rgba(255, 255, 255, 0.05);
+            --avatar-in: #000;
+        }
+
+        :root[data-theme="light"] {
+            --bg: #f3f4f6;
+            --text: #171717;
+            --accent: #3b82f6;
+            --accent-rgb: 59, 130, 246;
+            --glass: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --glass-card-bg: linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.2) 100%);
+            --panel-bg: rgba(255, 255, 255, 0.95);
+            --chat-msg-bg: rgba(0, 0, 0, 0.04);
+            --card-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+            --btn-bg: rgba(255, 255, 255, 0.5);
+            --btn-glimmer: rgba(255, 255, 255, 0.9);
+            --avatar-out: rgba(255, 255, 255, 0.6);
+            --avatar-in: #ffffff;
+        }
+
+        :root {
             --font-main: 'Inter', sans-serif;
             --font-heading: 'Outfit', sans-serif;
             --font-mono: 'Space Mono', monospace;
             --transition: cubic-bezier(0.23, 1, 0.32, 1);
         }
+
+
+
 
 
         * {
@@ -46,15 +76,16 @@
             font-family: var(--font-main);
             overflow-x: hidden;
             transition: background 0.5s var(--transition);
-            cursor: none;
-            /* Custom cursor */
+            cursor: auto;
         }
+
+
 
         /* --- 1. CINEMATIC LOADER --- */
         #loader {
             position: fixed;
             inset: 0;
-            background: #000;
+            background: var(--bg);
             z-index: 9999;
             display: flex;
             flex-direction: column;
@@ -79,7 +110,7 @@
             font-size: 1.8rem;
             font-weight: 800;
             letter-spacing: 0.6rem;
-            color: #fff;
+            color: var(--text);
             margin-bottom: 2rem;
             text-transform: uppercase;
             position: relative;
@@ -168,9 +199,10 @@
 
         /* --- 3. CUSTOM CURSOR --- */
         #cursor-dot {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             background: var(--accent);
+            box-shadow: 0 0 15px var(--accent);
             position: fixed;
             top: 0;
             left: 0;
@@ -178,12 +210,18 @@
             pointer-events: none;
             z-index: 10000;
             will-change: transform;
+            animation: dotGlow 1.5s infinite alternate ease-in-out;
+        }
+
+        @keyframes dotGlow {
+            0% { opacity: 0.6; box-shadow: 0 0 5px var(--accent); transform: scale(0.9); }
+            100% { opacity: 1; box-shadow: 0 0 25px var(--accent); transform: scale(1.1); }
         }
 
         #cursor-ring {
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--accent);
+            width: 45px;
+            height: 45px;
+            border: 2px dashed var(--accent);
             position: fixed;
             top: 0;
             left: 0;
@@ -192,13 +230,14 @@
             z-index: 9999;
             will-change: transform;
             transition: width 0.3s, height 0.3s, background-color 0.3s;
+            opacity: 0.9;
         }
 
         .cursor-hover #cursor-ring {
             width: 70px;
             height: 70px;
             background-color: rgba(var(--accent-rgb), 0.1);
-            border-color: transparent;
+            border: 2px solid transparent;
         }
 
         /* --- 4. DEPTH PARALLAX LAYOUT --- */
@@ -226,14 +265,14 @@
 
         /* --- 5. GLASS CARD (3D TILT) --- */
         .glass-card {
-            background: transparent;
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
+            background: var(--glass-card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: none;
             border-radius: 40px;
             padding: 3.5rem 2.5rem;
             text-align: center;
-            box-shadow: none;
+            box-shadow: var(--card-shadow);
             transform-style: preserve-3d;
             position: relative;
             transition: transform 0.1s ease-out;
@@ -256,22 +295,20 @@
             position: absolute;
             inset: 0;
             border-radius: 40px;
-            box-shadow: inset 0 0 40px rgba(var(--accent-rgb), 0.15);
-            background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(var(--accent-rgb), 0.08), transparent 40%);
+            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(var(--accent-rgb), 0.02), transparent 40%);
             pointer-events: none;
             z-index: 1;
-            animation: glowPulse 4s ease-in-out infinite;
+            animation: glowPulse 4.5s ease-in-out infinite;
         }
 
         @keyframes glowPulse {
-
-            0%,
-            100% {
-                opacity: 0.5;
+            0%, 100% {
+                opacity: 0.6;
+                box-shadow: inset 0 0 10px rgba(var(--accent-rgb), 0.01), 0 0 30px rgba(var(--accent-rgb), 0.1);
             }
-
             50% {
                 opacity: 1;
+                box-shadow: inset 0 0 20px rgba(var(--accent-rgb), 0.03), 0 0 70px rgba(var(--accent-rgb), 0.3);
             }
         }
 
@@ -289,8 +326,8 @@
             position: relative;
             padding: 4px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--avatar-out);
+            border: 1px solid var(--glass-border);
             transition: all 0.6s var(--transition);
         }
 
@@ -334,13 +371,13 @@
             width: 100%;
             height: 100%;
             border-radius: inherit;
-            background: #000;
+            background: var(--avatar-in);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             position: relative;
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--glass-border);
         }
 
         .avatar-inner img {
@@ -428,7 +465,7 @@
             justify-content: center;
             gap: 12px;
             padding: 1.2rem;
-            background: rgba(255, 255, 255, 0.02);
+            background: var(--btn-bg);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             color: var(--text);
@@ -466,7 +503,7 @@
         .btn-glimmer {
             position: absolute;
             inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            background: linear-gradient(90deg, transparent, var(--btn-glimmer), transparent);
             transform: translateX(-100%);
             transition: transform 0.6s;
         }
@@ -492,32 +529,33 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            animation: orbFloat 4s ease-in-out infinite;
+            transition: background 0.3s, box-shadow 0.3s, border-color 0.3s, fill 0.3s;
+            animation: orbBounce 3s ease-in-out infinite;
             position: relative;
         }
 
+        .orb:nth-child(1) {
+            animation-delay: 0s;
+        }
+
         .orb:nth-child(2) {
-            animation-delay: -1s;
+            animation-delay: 0.2s;
         }
 
         .orb:nth-child(3) {
-            animation-delay: -2s;
+            animation-delay: 0.4s;
         }
 
         .orb:nth-child(4) {
-            animation-delay: -3s;
+            animation-delay: 0.6s;
         }
 
-        @keyframes orbFloat {
-
-            0%,
-            100% {
+        @keyframes orbBounce {
+            0%, 100% {
                 transform: translateY(0);
             }
-
             50% {
-                transform: translateY(-12px);
+                transform: translateY(-18px);
             }
         }
 
@@ -530,7 +568,6 @@
 
         .orb:hover {
             border-color: var(--accent);
-            transform: scale(1.2) rotate(10deg);
             box-shadow: 0 0 20px var(--accent);
             background: rgba(var(--accent-rgb), 0.1);
         }
@@ -599,9 +636,9 @@
             bottom: 85px;
             right: 0;
             width: 330px;
-            background: rgba(10, 10, 10, 0.95);
+            background: var(--panel-bg);
             backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
             border-radius: 24px;
             display: none;
             flex-direction: column;
@@ -624,7 +661,7 @@
             align-items: center;
             gap: 12px;
             padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--glass-border);
         }
 
         .ai-status {
@@ -658,7 +695,7 @@
         }
 
         .ai-msg {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--chat-msg-bg);
             color: var(--text);
             align-self: flex-start;
             border-bottom-left-radius: 4px;
@@ -722,25 +759,61 @@
         }
 
         .footer-icons svg {
-            width: 18px;
-            height: 18px;
+            width: 24px;
+            height: 24px;
             stroke: var(--accent);
             stroke-width: 1.5;
-            animation: pulse-glow 2s infinite ease-in-out;
+            animation: bounce-icons 2.5s infinite ease-in-out;
+            cursor: pointer;
         }
 
-        @keyframes pulse-glow {
+        .footer-icons svg:nth-child(2) {
+            animation-delay: 1.25s;
+        }
 
-            0%,
-            100% {
-                opacity: 0.4;
-                transform: scale(1);
+        @keyframes bounce-icons {
+            0%, 100% {
+                opacity: 0.5;
+                transform: translateY(0px) scale(0.9);
             }
-
             50% {
                 opacity: 1;
-                transform: scale(1.1);
+                transform: translateY(-8px) scale(1.1);
+                filter: drop-shadow(0 5px 10px rgba(var(--accent-rgb), 0.4));
             }
+        }
+
+        /* --- 12. THEME TOGGLER --- */
+        #theme-toggle {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.4s var(--transition);
+            color: var(--text);
+            backdrop-filter: blur(10px);
+        }
+
+        #theme-toggle:hover {
+            transform: scale(1.1);
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.3);
+            color: var(--accent);
+        }
+
+        #theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            transition: 0.3s;
         }
 
         /* --- RESPONSIVE ADJUSTMENTS --- */
@@ -809,6 +882,24 @@
     <!-- Custom Cursor -->
     <div id="cursor-dot"></div>
     <div id="cursor-ring"></div>
+
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" aria-label="Toggle Theme" class="magnetic">
+        <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+    </button>
 
     <!-- Main Container -->
     <div class="page-wrapper">
@@ -955,6 +1046,8 @@
             <div class="chat-msg ai-msg">Hi! I'm Oussama's AI. How can I assist you today?</div>
             <div class="chat-msg user-option" onclick="askAI('technologies')">What's your tech stack?</div>
             <div class="chat-msg user-option" onclick="askAI('availability')">Are you taking new projects?</div>
+            <div class="chat-msg user-option" onclick="askAI('contact')">How can I contact you?</div>
+            <div class="chat-msg user-option" onclick="askAI('services')">What are your services?</div>
             <div class="chat-msg ai-msg" id="ai-reply" style="display:none;"></div>
         </div>
     </div>
@@ -1067,6 +1160,7 @@
             }
         });
 
+        let ringRot = 0;
         function updateCursor() {
             if (window.innerWidth <= 1024) return; // Stop logic on mobile
 
@@ -1076,8 +1170,10 @@
             app.ringPos.x += (app.targetMouse.x - app.ringPos.x) * 0.12;
             app.ringPos.y += (app.targetMouse.y - app.ringPos.y) * 0.12;
 
+            ringRot += 2;
+
             dot.style.transform = `translate3d(${app.targetMouse.x}px, ${app.targetMouse.y}px, 0) translate(-50%, -50%)`;
-            ring.style.transform = `translate3d(${app.ringPos.x}px, ${app.ringPos.y}px, 0) translate(-50%, -50%)`;
+            ring.style.transform = `translate3d(${app.ringPos.x}px, ${app.ringPos.y}px, 0) translate(-50%, -50%) rotate(${ringRot}deg)`;
 
             requestAnimationFrame(updateCursor);
         }
@@ -1087,6 +1183,7 @@
         const magnets = document.querySelectorAll('.magnetic');
         magnets.forEach(el => {
             el.addEventListener('mousemove', e => {
+                if (window.innerWidth <= 1024) return;
                 const rect = el.getBoundingClientRect();
                 const x = (e.clientX - rect.left - rect.width / 2) * 0.35;
                 const y = (e.clientY - rect.top - rect.height / 2) * 0.35;
@@ -1094,6 +1191,7 @@
                 document.body.classList.add('cursor-hover');
             });
             el.addEventListener('mouseleave', () => {
+                if (window.innerWidth <= 1024) return;
                 el.style.transform = '';
                 document.body.classList.remove('cursor-hover');
             });
@@ -1137,6 +1235,10 @@
             setTimeout(() => {
                 if (type === 'technologies') {
                     aiReply.textContent = "Stack Analysis: React, Next.js, Node.js, and Advanced CSS Architectures.";
+                } else if (type === 'contact') {
+                    aiReply.textContent = "You can reach Oussama directly on WhatsApp or Email using the icons below.";
+                } else if (type === 'services') {
+                    aiReply.textContent = "Services: High-performance Frontend, Backend Systems, and UI/UX Architecture.";
                 } else {
                     aiReply.textContent = "Status: Available for high-impact collaborations. Directing to Contact form.";
                 }
@@ -1146,6 +1248,26 @@
         // Close chat on outside click
         document.addEventListener('click', e => {
             if (!aiToggle.contains(e.target) && !chatPanel.contains(e.target)) chatPanel.classList.remove('active');
+        });
+
+        // --- 9. THEME TOGGLES ---
+        const themeBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        const moonIcon = document.getElementById('moon-icon');
+        const sunIcon = document.getElementById('sun-icon');
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-theme', newTheme);
+            
+            if (newTheme === 'light') {
+                moonIcon.style.display = 'block';
+                sunIcon.style.display = 'none';
+            } else {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            }
         });
 
         // --- 8. RIPPLE CLICK ---
