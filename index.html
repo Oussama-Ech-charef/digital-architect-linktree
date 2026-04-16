@@ -1051,6 +1051,27 @@
             <div class="chat-msg ai-msg" id="ai-reply" style="display:none;"></div>
         </div>
     </div>
+    <div id="ai-assistant">
+        <button id="ai-toggle" aria-label="Ask AI Assistant">
+            <svg fill="#000" width="30" height="30" viewBox="0 0 24 24">
+                <path
+                    d="M12 2C6.477 2 2 6.477 2 12c0 1.821.487 3.53 1.338 5L2 22l5-1.338c1.47.851 3.179 1.338 5 1.338 5.523 0 10-4.477 10-10S17.523 2 12 2z" />
+            </svg>
+        </button>
+        <div class="chat-panel" id="chat-panel">
+            <div class="chat-header">
+                <div class="ai-status"></div>
+                <span style="font-size: 0.8rem; font-weight: 700; opacity: 0.6; letter-spacing: 1px;">CORE
+                    ASSISTANT</span>
+            </div>
+            <div class="chat-msg ai-msg">Hi! I'm Oussama's AI. How can I assist you today?</div>
+            <div class="chat-msg user-option" onclick="askAI('technologies')">What's your tech stack?</div>
+            <div class="chat-msg user-option" onclick="askAI('availability')">Are you taking new projects?</div>
+            <div class="chat-msg user-option" onclick="askAI('contact')">How can I contact you?</div>
+            <div class="chat-msg user-option" onclick="askAI('services')">What are your services?</div>
+            <div class="chat-msg ai-msg" id="ai-reply" style="display:none;"></div>
+        </div>
+    </div>
 
     <script>
         // --- CORE PERFORMANCE STATE ---
